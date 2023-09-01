@@ -28,9 +28,11 @@ datetime2ticks = function (x) {
 
 create_packet = function(packet, scale = 341L) {
 
-  payload = packet[, c("X", "Y", "Z")]
   packet_timestamp = unique(packet$second)
   packet_timestamp = as.integer(packet_timestamp)
+
+  payload = packet[, c("X", "Y", "Z")]
+  rm(packet)
 
   payload = round(payload * scale)
   payload = c(t(payload))
@@ -201,9 +203,12 @@ write_gt3x = function(
   writeLines(info, con = info_file)
 
 
-  df$second = lubridate::floor_date(df$time, "seconds")
+  df$second = as.character(lubridate::floor_date(df$time, "seconds"))
+  df$time = NULL
   packets = split(df, df$second)
   packets = unname(packets)
+  rm(df);
+
   # packet = packets[[5]]
 
   header = pbapply::pblapply(packets, create_packet,
