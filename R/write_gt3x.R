@@ -202,8 +202,15 @@ write_gt3x = function(
   info = paste0(names(info), ": ", info)
   writeLines(info, con = info_file)
 
-
-  df$second = as.character(lubridate::floor_date(df$time, "seconds"))
+  quick_floor_second = function(x) {
+    # lubridate::as_datetime(floor(as.numeric(x)))
+    as.integer(floor(as.numeric(x)))
+  }
+  # df$second = strptime(
+  #   lubridate::floor_date(df$time, "seconds"),
+  #   format = "%Y-%m-%d %H:%M:%S",
+  #   tz = "UTC")
+  df$second = quick_floor_second(df$time)
   df$time = NULL
   packets = split(df, df$second)
   packets = unname(packets)
