@@ -22,7 +22,7 @@ write_gt3x(
 use \code{"8"}}
 }
 \value{
-The GT3X file path
+The GT3X file path output.
 }
 \description{
 Write a GT3X file

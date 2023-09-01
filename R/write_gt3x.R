@@ -138,7 +138,7 @@ create_info = function(
 #' @param max_g max value (in g) of the device the data was from. If unsure,
 #' use `"8"`
 #'
-#' @return The GT3X file path
+#' @return The GT3X file path output.
 #' @export
 #'
 #' @examples
@@ -166,7 +166,6 @@ create_info = function(
 #'     )
 #'   ))
 #' }
-
 write_gt3x = function(
     df,
     file = tempfile(fileext = ".gt3x"),
