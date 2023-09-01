@@ -165,6 +165,9 @@ create_info = function(
 #'       df_df[, c("time", "X", "Y", "Z")]
 #'     )
 #'   ))
+#'   testthat::expect_warning(write_gt3x(df = df,
+#'                                       sample_rate = sample_rate,
+#'                                       max_g = "6"))
 #' }
 write_gt3x = function(
     df,
@@ -173,13 +176,19 @@ write_gt3x = function(
     max_g = c("8", "6")) {
 
   df$time = lubridate::with_tz(df$time, "UTC")
+  max_g = match.arg(max_g)
+  max_value = max(df[, c("X", "Y", "Z")])
+  if (max_value > as.numeric(max_g)) {
+    warning("Max Acceleration is larger than max_g!  Setting `max_g` to",
+            "8")
+    max_g = "8"
+  }
 
   info = create_info(
     df = df,
     sample_rate = sample_rate,
     max_g = max_g
   )
-  max_g = match.arg(max_g)
   acceleration_scale = switch(
     max_g,
     "6" = 341L,

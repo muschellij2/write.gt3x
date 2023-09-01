@@ -51,5 +51,8 @@ if (requireNamespace("read.gt3x", quietly = TRUE)) {
       df_df[, c("time", "X", "Y", "Z")]
     )
   ))
+  testthat::expect_warning(write_gt3x(df = df,
+                                      sample_rate = sample_rate,
+                                      max_g = "6"))
 }
 }
