@@ -1,0 +1,19 @@
+Package: write.gt3x
+Title: Writes 'Actigraph' 'GT3X' File Format
+Version: 0.0.0.9000
+Authors@R: c(person(given = "John",
+           family = "Muschelli",
+           email = "muschellij2@gmail.com",
+           role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-6469-1750")))
+Description: Converts accelerometer data into a basic GT3X file
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports: 
+    lubridate,
+    pbapply,
+    utils
+Suggests: 
+    read.gt3x
