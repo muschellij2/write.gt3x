@@ -1,0 +1,62 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# write.gt3x
+
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/muschellij2/write.gt3x/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/muschellij2/write.gt3x/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
+The goal of `write.gt3x` is to convert accelerometry into Actigraph GT3X file formats.
+
+## Installation
+
+You can install the development version of `write.gt3x` like so:
+
+``` r
+remotes::install_github("muschellij2/write.gt3x")
+```
+
+## Example
+
+This is a basic example which shows you how to solve a common problem:
+
+```{r example}
+library(write.gt3x)
+if (requireNamespace("read.gt3x", quietly = TRUE)) {
+  gt3xfile <- system.file(
+    "extdata", "TAS1H30182785_2019-09-17.gt3x",
+    package = "read.gt3x")
+  df <- read.gt3x::read.gt3x(
+    gt3xfile, imputeZeroes = FALSE, asDataFrame = TRUE,
+    verbose = TRUE)
+  sample_rate = attr(df, "sample_rate")
+  max_g = attr(df, "acceleration_max")
+  max_g = as.character(as.integer(max_g))
+  out = write_gt3x(df = df, sample_rate = sample_rate, max_g = max_g)
+  read.gt3x::is_gt3x(out)
+  read.gt3x::have_log_and_info(out)
+  x <- read.gt3x::read.gt3x(out, imputeZeroes = FALSE, asDataFrame = TRUE,
+                            verbose = TRUE)
+  df_x = as.data.frame(x)
+  df_df = as.data.frame(df)
+  stopifnot(isTRUE(
+    all.equal(
+      df_x[, c("time", "X", "Y", "Z")], 
+      df_df[, c("time", "X", "Y", "Z")]
+    )
+  ))
+}
+```

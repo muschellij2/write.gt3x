@@ -156,7 +156,15 @@ create_info = function(
 #'   read.gt3x::is_gt3x(out)
 #'   read.gt3x::have_log_and_info(out)
 #'   x <- read.gt3x::read.gt3x(out, imputeZeroes = FALSE, asDataFrame = TRUE,
-#'                  verbose = TRUE)
+#'                             verbose = TRUE)
+#'   df_x = as.data.frame(x)
+#'   df_df = as.data.frame(df)
+#'   stopifnot(isTRUE(
+#'     all.equal(
+#'       df_x[, c("time", "X", "Y", "Z")],
+#'       df_df[, c("time", "X", "Y", "Z")]
+#'     )
+#'   ))
 #' }
 
 write_gt3x = function(
@@ -172,10 +180,16 @@ write_gt3x = function(
     sample_rate = sample_rate,
     max_g = max_g
   )
+  max_g = match.arg(max_g)
+  acceleration_scale = switch(
+    max_g,
+    "6" = 341L,
+    "8" = 256L)
 
   tdir = tempfile()
   dir.create(tdir, showWarnings = FALSE, recursive = TRUE)
   info_file = file.path(tdir, "info.txt")
+  info = paste0(names(info), ": ", info)
   writeLines(info, con = info_file)
 
 
@@ -184,15 +198,21 @@ write_gt3x = function(
   packets = unname(packets)
   # packet = packets[[5]]
 
-  header = pbapply::pblapply(packets, create_packet)
+  header = pbapply::pblapply(packets, create_packet,
+                             scale = acceleration_scale)
   header = unname(header)
   header = unlist(header)
 
   log_file = file.path(tdir, "log.bin")
   writeBin(header, con = log_file)
 
-  files = file.path(tdir, c("log.bin", "info.txt"))
-  utils::zip(file, files = files)
+  owd = getwd()
+  on.exit({
+    setwd(owd)
+  }, add = TRUE)
+  setwd(tdir)
+  utils::zip(file, files = c("log.bin", "info.txt"))
+  setwd(owd)
   return(file)
 }
 

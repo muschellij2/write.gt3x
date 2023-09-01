@@ -1,3 +1,6 @@
 ^write\.gt3x\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
+^README\.Rmd$
+^\.github$
+^\.DS_Store$
