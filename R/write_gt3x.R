@@ -64,7 +64,8 @@ create_packet = function(packet, scale = 341L) {
 create_info = function(
     df,
     sample_rate = 30L,
-    max_g = c("8", "6")
+    max_g = c("8", "6"),
+    acceleration_scale = NULL
 ) {
 
   df$time = lubridate::with_tz(df$time, "UTC")
@@ -82,10 +83,12 @@ create_info = function(
     max_g,
     "6" = "CLE2F",
     "8" = "MOS2F")
-  acceleration_scale = switch(
-    max_g,
-    "6" = 341L,
-    "8" = 256L)
+  if (is.null(acceleration_scale)) {
+    acceleration_scale = switch(
+      max_g,
+      "6" = 341L,
+      "8" = 256L)
+  }
 
   serial_number = paste0(serial_prefix,
                          paste(rep("0", 13 - nchar(serial_prefix)),
@@ -139,6 +142,9 @@ create_info = function(
 #' @param sample_rate sampling frequency of the data
 #' @param max_g max value (in g) of the device the data was from. If unsure,
 #' use `"8"`
+#' @param acceleration_scale The rescaling factor to scale the data to integers.
+#' Normally, this is determined by the `max_g` (technically the serial
+#' number/model of the device).  NOTE: this may result in a malformed GT3X file
 #'
 #' @return The GT3X file path output.
 #' @export
@@ -175,7 +181,9 @@ write_gt3x = function(
     df,
     file = tempfile(fileext = ".gt3x"),
     sample_rate = 30L,
-    max_g = c("8", "6")) {
+    max_g = c("8", "6"),
+    acceleration_scale = NULL
+) {
 
   df$time = lubridate::with_tz(df$time, "UTC")
   max_g = match.arg(max_g)
@@ -186,15 +194,19 @@ write_gt3x = function(
     max_g = "8"
   }
 
+  if (is.null(acceleration_scale)) {
+    acceleration_scale = switch(
+      max_g,
+      "6" = 341L,
+      "8" = 256L)
+  }
   info = create_info(
     df = df,
     sample_rate = sample_rate,
-    max_g = max_g
+    max_g = max_g,
+    acceleration_scale = acceleration_scale
   )
-  acceleration_scale = switch(
-    max_g,
-    "6" = 341L,
-    "8" = 256L)
+
 
   tdir = tempfile()
   dir.create(tdir, showWarnings = FALSE, recursive = TRUE)

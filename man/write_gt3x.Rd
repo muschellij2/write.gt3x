@@ -8,7 +8,8 @@ write_gt3x(
   df,
   file = tempfile(fileext = ".gt3x"),
   sample_rate = 30L,
-  max_g = c("8", "6")
+  max_g = c("8", "6"),
+  acceleration_scale = NULL
 )
 }
 \arguments{
@@ -20,6 +21,10 @@ write_gt3x(
 
 \item{max_g}{max value (in g) of the device the data was from. If unsure,
 use \code{"8"}}
+
+\item{acceleration_scale}{The rescaling factor to scale the data to integers.
+Normally, this is determined by the \code{max_g} (technically the serial
+number/model of the device).  NOTE: this may result in a malformed GT3X file}
 }
 \value{
 The GT3X file path output.
