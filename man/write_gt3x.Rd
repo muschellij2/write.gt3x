@@ -9,7 +9,8 @@ write_gt3x(
   file = tempfile(fileext = ".gt3x"),
   sample_rate = 30L,
   max_g = c("8", "6"),
-  acceleration_scale = NULL
+  acceleration_scale = NULL,
+  add_meta = TRUE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ use \code{"8"}}
 \item{acceleration_scale}{The rescaling factor to scale the data to integers.
 Normally, this is determined by the \code{max_g} (technically the serial
 number/model of the device).  NOTE: this may result in a malformed GT3X file}
+
+\item{add_meta}{add a metadata record}
 }
 \value{
 The GT3X file path output.

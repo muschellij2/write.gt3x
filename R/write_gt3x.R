@@ -145,6 +145,7 @@ create_info = function(
 #' @param acceleration_scale The rescaling factor to scale the data to integers.
 #' Normally, this is determined by the `max_g` (technically the serial
 #' number/model of the device).  NOTE: this may result in a malformed GT3X file
+#' @param add_meta add a metadata record
 #'
 #' @return The GT3X file path output.
 #' @export
@@ -182,7 +183,8 @@ write_gt3x = function(
     file = tempfile(fileext = ".gt3x"),
     sample_rate = 30L,
     max_g = c("8", "6"),
-    acceleration_scale = NULL
+    acceleration_scale = NULL,
+    add_meta = TRUE
 ) {
 
   file = fs::path_abs(file)
@@ -236,11 +238,13 @@ write_gt3x = function(
   header = unname(header)
   header = unlist(header)
 
-  meta_header = create_meta_packet()
-  meta_header = unname(meta_header)
-  meta_header = unlist(meta_header)
+  if (add_meta) {
+    meta_header = create_meta_packet()
+    meta_header = unname(meta_header)
+    meta_header = unlist(meta_header)
 
-  header = c(meta_header, header)
+    header = c(meta_header, header)
+  }
 
   log_file = file.path(tdir, "log.bin")
   writeBin(header, con = log_file)
