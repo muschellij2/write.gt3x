@@ -185,6 +185,7 @@ write_gt3x = function(
     acceleration_scale = NULL
 ) {
 
+  file = fs::path_abs(file)
   df$time = lubridate::with_tz(df$time, "UTC")
   max_g = match.arg(max_g)
   max_value = max(df[, c("X", "Y", "Z")])
@@ -234,6 +235,12 @@ write_gt3x = function(
                              scale = acceleration_scale)
   header = unname(header)
   header = unlist(header)
+
+  meta_header = create_meta_packet()
+  meta_header = unname(meta_header)
+  meta_header = unlist(meta_header)
+
+  header = c(meta_header, header)
 
   log_file = file.path(tdir, "log.bin")
   writeBin(header, con = log_file)
