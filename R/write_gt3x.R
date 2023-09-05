@@ -39,7 +39,7 @@ create_packet = function(packet, scale = 341L) {
   payload = as.integer(payload)
   size = length(payload) * 2L # 2 bytes
   size = as.integer(size)
-  checksum = 8L + size
+  # checksum = 8L + size
 
   # writeBin("\x1e"
   header = c(
@@ -56,9 +56,15 @@ create_packet = function(packet, scale = 341L) {
     # size in bytes
     writeBin(size, raw(0), size = 2L, endian = "little")[1:2],
     # payload/data
-    writeBin(payload, raw(0), endian = "little", size = 2L),
-    writeBin(checksum, raw(0), endian = "little", size = 1L)[1]
+    writeBin(payload, raw(0), endian = "little", size = 2L)
   )
+  checksum = writeBin(checksum_from_header(header), raw(0),
+                      endian = "little", size = 1L)[1]
+  header = c(
+    header,
+    checksum
+  )
+
 }
 
 create_info = function(
@@ -243,7 +249,8 @@ write_gt3x = function(
     meta_header = unname(meta_header)
     meta_header = unlist(meta_header)
 
-    header = c(meta_header, header)
+    param_header = params_packet()
+    header = c(meta_header, param_header, header)
   }
 
   log_file = file.path(tdir, "log.bin")
