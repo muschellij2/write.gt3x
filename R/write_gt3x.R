@@ -254,7 +254,7 @@ write_gt3x = function(
   #   header = c(meta_header, param_header, header)
   # }
   if (add_meta) {
-    header = c(gt3x_header, header)
+    header = c(write.gt3x::gt3x_header, header)
   }
 
   log_file = file.path(tdir, "log.bin")
