@@ -244,14 +244,17 @@ write_gt3x = function(
   header = unname(header)
   header = unlist(header)
 
+  # if (add_meta) {
+  #   meta_header = create_meta_packet()
+  #   meta_header = unname(meta_header)
+  #   meta_header = unlist(meta_header)
+  #
+  #   # need to fix this somehow
+  #   param_header = params_packet()
+  #   header = c(meta_header, param_header, header)
+  # }
   if (add_meta) {
-    meta_header = create_meta_packet()
-    meta_header = unname(meta_header)
-    meta_header = unlist(meta_header)
-
-    # need to fix this somehow
-    param_header = params_packet()
-    header = c(meta_header, param_header, header)
+    header = c(gt3x_header, header)
   }
 
   log_file = file.path(tdir, "log.bin")
