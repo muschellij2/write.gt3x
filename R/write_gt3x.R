@@ -190,7 +190,7 @@ write_gt3x = function(
     sample_rate = 30L,
     max_g = c("8", "6"),
     acceleration_scale = NULL,
-    add_meta = FALSE
+    meta = c("none", "header", "full_header")
 ) {
 
   file = fs::path_abs(file)
@@ -253,6 +253,13 @@ write_gt3x = function(
   #   param_header = params_packet()
   #   header = c(meta_header, param_header, header)
   # }
+  meta = match.arg(meta)
+  switch(
+    meta,
+    none = NULL,
+    header = write.gt3x::gt3x_header,
+    full_header = write.gt3x::full_gt3x_header,
+  )
   if (add_meta) {
     header = c(write.gt3x::gt3x_header, header)
   }

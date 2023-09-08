@@ -28,6 +28,12 @@ keep_ind = df %>%
 last_header_record = keep_ind$record_ind[which(keep_ind$value == 0x1a)[1] - 1]
 df = df %>%
   filter(record_ind <= last_header_record)
-gt3x_header = df$value
+full_gt3x_header = df$value
 
+usethis::use_data(full_gt3x_header, overwrite = TRUE)
+
+last_header_record = keep_ind$record_ind[which(keep_ind$value == 0x15)[1]]
+df = df %>%
+  filter(record_ind <= last_header_record)
+gt3x_header = df$value
 usethis::use_data(gt3x_header, overwrite = TRUE)

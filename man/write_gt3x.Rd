@@ -10,7 +10,7 @@ write_gt3x(
   sample_rate = 30L,
   max_g = c("8", "6"),
   acceleration_scale = NULL,
-  add_meta = FALSE
+  meta = c("none", "header", "full_header")
 )
 }
 \arguments{
