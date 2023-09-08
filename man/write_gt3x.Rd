@@ -27,7 +27,7 @@ use \code{"8"}}
 Normally, this is determined by the \code{max_g} (technically the serial
 number/model of the device).  NOTE: this may result in a malformed GT3X file}
 
-\item{add_meta}{add a metadata record}
+\item{meta}{should a metadata header and other records be added?}
 }
 \value{
 The GT3X file path output.
