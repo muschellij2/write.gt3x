@@ -1,6 +1,6 @@
 Package: write.gt3x
 Title: Writes 'Actigraph' 'GT3X' File Format
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: c(person(given = "John",
            family = "Muschelli",
            email = "muschellij2@gmail.com",
@@ -16,6 +16,7 @@ Imports:
     jsonlite,
     lubridate,
     pbapply,
+    readr,
     utils
 Suggests: 
     read.gt3x,
