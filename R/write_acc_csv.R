@@ -97,7 +97,8 @@ write_actigraph_csv = function(
     df,
     file = tempfile(fileext = ".csv"),
     sample_rate = 30L,
-    max_g = c("8", "6")
+    max_g = c("8", "6"),
+    ...
 ) {
   X = Y = Z = NULL
   rm(list = c("X", "Y", "Z"))
