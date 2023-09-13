@@ -119,5 +119,5 @@ write_actigraph_csv = function(
     append = TRUE,
     col_names = TRUE,
     ...)
-  return()
+  return(file)
 }
