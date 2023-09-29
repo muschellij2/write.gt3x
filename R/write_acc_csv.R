@@ -50,11 +50,11 @@ create_csv_header = function(
   mode = 12
 
   header = c(
-    paste0("------------",
+    paste0("------------ ",
            "Data File Created By ActiGraph ", device_type, " ActiLife v6.13.3 ",
            "Firmware v", firmware, " ",
            "date format M/d/yyyy at ", sample_rate, " Hz",
-           "-----------"),
+           " -----------"),
     paste0("Serial Number: ", serial_number),
     paste0("Start Time ", start_time),
     paste0("Start Date ", start_date), #  3/8/2016
