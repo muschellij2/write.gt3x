@@ -120,7 +120,7 @@ write_actigraph_csv = function(
     }
     conn = switch(
       ext,
-      csv = file(description = file, open = "w"),
+      csv = file(description = file, open = "wb"),
       gz = gzfile(description = file, open = "wb", compression = 9)
     )
   } else {
