@@ -126,7 +126,7 @@ write_actigraph_csv = function(
   } else {
     conn = file
   }
-  stopifnot(!inherits(conn, "connection"))
+  stopifnot(inherits(conn, "connection"))
   on.exit(close(conn))
   writeLines(header, conn)
   readr::write_csv(
