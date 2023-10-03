@@ -112,6 +112,21 @@ write_actigraph_csv = function(
     dplyr::select("Accelerometer X" = X,
                   "Accelerometer Y" = Y,
                   "Accelerometer Z" = Z)
+  stopifnot(length(file) == 1)
+  if (is.character(file)) {
+    ext = tolower(tools::file_ext(file))
+    if (!ext %in% c("csv", "gz")) {
+      stop("write_actigraph_csv only works for .csv/.csv.gz")
+    }
+    filename = file
+    file = switch(
+      ext,
+      csv = file(description = filename, open = "w"),
+      gz = gzfile(description = filename, open = "wb", compression = 9)
+    )
+  }
+  stopifnot(!inherits(file, "connection"))
+  on.exit(close(file))
   writeLines(header, file)
   readr::write_csv(
     df,
