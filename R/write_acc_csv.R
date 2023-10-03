@@ -118,19 +118,20 @@ write_actigraph_csv = function(
     if (!ext %in% c("csv", "gz")) {
       stop("write_actigraph_csv only works for .csv/.csv.gz")
     }
-    filename = file
-    file = switch(
+    conn = switch(
       ext,
-      csv = file(description = filename, open = "w"),
-      gz = gzfile(description = filename, open = "wb", compression = 9)
+      csv = file(description = file, open = "w"),
+      gz = gzfile(description = file, open = "wb", compression = 9)
     )
+  } else {
+    conn = file
   }
-  stopifnot(!inherits(file, "connection"))
-  on.exit(close(file))
-  writeLines(header, file)
+  stopifnot(!inherits(conn, "connection"))
+  on.exit(close(conn))
+  writeLines(header, conn)
   readr::write_csv(
     df,
-    file = file,
+    file = conn,
     append = TRUE,
     col_names = TRUE,
     ...)
